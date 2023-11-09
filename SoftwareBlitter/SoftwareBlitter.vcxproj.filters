@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Library">
+      <UniqueIdentifier>{043d2130-60e6-4a08-bcae-ba04fa2c59bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Core">
+      <UniqueIdentifier>{1a945d50-14fa-4b7b-a038-6f38a2db2dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Math">
+      <UniqueIdentifier>{3b8f29ce-77bc-4386-941c-301d52650cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bitmap">
+      <UniqueIdentifier>{2eacbd03-8c5a-44c2-a857-0c2c92ed82d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{c6e91104-d5f5-4db7-93d3-66593ccb55a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{4e4cbfce-b596-47a1-9fef-ebe5d1980f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{2421a391-3ea8-4ec8-bdf7-c47803b1efeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{e1ff01e8-be25-4347-86a4-d1b7eb9ef6c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Library\Error.cpp">
+      <Filter>Library\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Library\Timer.cpp">
+      <Filter>Library\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Library\Vector2D.cpp">
+      <Filter>Library\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="SoftSprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftwareRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Fish.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="WinGDISurface.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteInstance.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Library\Error.h">
+      <Filter>Library\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Timer.h">
+      <Filter>Library\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Vector2D.h">
+      <Filter>Library\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="SoftSprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapHeader.h">
+      <Filter>Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftwareRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Fish.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="WinGDISurface.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourFormatHelper.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendMode.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteInstance.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Library\Vector2D.inl">
+      <Filter>Library\Math</Filter>
+    </None>
+  </ItemGroup>
+</Project>
