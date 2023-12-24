@@ -72,69 +72,80 @@ void WinGDISurface::Clear()
 }
 
 /*****************************************************************************************/
-void WinGDISurface::AddSprite(SpriteInstance* sprite)
+void WinGDISurface::AddSprite(SpriteInstance* spriteInstance)
 {
-	const Bitmap* bitmap = sprite->GetSpriteData()->GetRawData();
+	unsigned int posX = (unsigned int)spriteInstance->GetPosition().x;
+	unsigned int posY = (unsigned int)spriteInstance->GetPosition().y;
+	char depth = spriteInstance->GetDepth();
+	int direction = spriteInstance->GetFlip() ? -1 : 1;
+	int srcIncrement = spriteInstance->GetFlip() ? 2 : 0;
 
-	int spriteWidth = bitmap->GetWidth();
-	int spriteHeight = bitmap->GetHeight();
-	bool enableTransparency = sprite->GetSpriteData()->UsesTransparency();
+	SoftSprite* spriteData = spriteInstance->GetSpriteData();
+	const unsigned int* srcPixel = spriteData->GetRawPtr();
+	const char* mask = spriteData->GetMaskPtr();
+	unsigned int spriteWidth = spriteData->GetWidth();
+	unsigned int spriteHeight = spriteData->GetHeight();
 
-	int spriteActualPositionY = m_bufferHeight - spriteHeight - (int)sprite->GetPosition().y;
-	int destinationIndex = spriteActualPositionY * m_bufferWidth + (int)sprite->GetPosition().x;
+	char* depthBuffer = m_depthBuffer + (posY * m_bufferWidth + posX);
+	unsigned int* dstPixel = m_pixelData + (posY * m_bufferWidth + posX);
 
-	int sourceX = sprite->GetFlip() ? (spriteWidth - 1) : 0;
-	int sourceDirection = sprite->GetFlip() ? -1 : 1;
+	unsigned int runLength = m_bufferWidth - posX;
+	unsigned int runHeight = m_bufferHeight - (unsigned int)spriteInstance->GetPosition().y;
 
-	unsigned char r, g, b;
-	bool validDepth = true;
-	unsigned int transparencyColour = -1;
-
-	if (enableTransparency)
+	if (runLength > spriteWidth)
 	{
-		bitmap->GetPixelRGB(0, 0, &r, &g, &b);
-		transparencyColour = RGB32(r, g, b);
+		runLength = spriteWidth;
 	}
 
-	for (int spriteY = spriteHeight - 1; spriteY >= 0; spriteY--)
+	if (runHeight > spriteHeight)
 	{
-		for (int spriteX = 0; spriteX < spriteWidth; spriteX++)
+		runHeight = spriteHeight;
+	}
+
+	if (spriteInstance->GetFlip())
+	{
+		srcPixel = srcPixel + spriteWidth;
+		mask = mask + spriteWidth;
+	}
+
+	bool writePixel = true;
+
+	for (unsigned int width = 0; width < runLength; width++)
+	{
+		for (unsigned int height = 0; height < runHeight; height++)
 		{
-			validDepth = true;
+			writePixel = true;
 
-			if (destinationIndex < m_totalPixelCount && destinationIndex >= 0)
+			writePixel ^= (m_blendMode == ALWAYS_FAIL_DEPTH && *depthBuffer != 127);
+			writePixel ^= (m_blendMode == COMPARE_DEPTH && depth >= *depthBuffer);
+
+			/*if (m_blendMode == ALWAYS_FAIL_DEPTH && *depthBuffer < 127)
 			{
-				if (m_blendMode == ALWAYS_FAIL_DEPTH && m_depthBuffer[destinationIndex] != 127)
-				{
-					validDepth = false;
-				}
-				else if (m_blendMode == COMPARE_DEPTH)
-				{
-					if (m_depthBuffer[destinationIndex] < sprite->GetDepth() && m_depthBuffer[destinationIndex] != -1)
-					{
-						validDepth = false;
-					}
-				}
+				// skip written pixel
+				writePixel = false;
+			}
+			else if (m_blendMode == COMPARE_DEPTH && depth >= *depthBuffer)
+			{
+				// skip writing deeper object, there is something in front of it
+				writePixel = false;
+			}*/
 
-				if (validDepth)
-				{
-					bitmap->GetPixelRGB(sourceX, spriteY, &r, &g, &b);
-					unsigned long colour = RGB32(r, g, b);
-
-					if ((enableTransparency && colour != transparencyColour) || !enableTransparency)
-					{
-						m_depthBuffer[destinationIndex] = sprite->GetDepth();
-						m_pixelData[destinationIndex] = colour;
-					}
-				}
+			if (writePixel)
+			{
+				*dstPixel = (*dstPixel & *mask) | *srcPixel;
+				*depthBuffer = (*depthBuffer & *mask) | depth;
 			}
 
-			sourceX += sourceDirection;
-			destinationIndex++;
+			dstPixel++;
+			srcPixel += direction;
+			mask += direction;
+			depthBuffer++;
 		}
 
-		sourceX = sprite->GetFlip() ? (spriteWidth - 1) : 0;
-		destinationIndex += (m_bufferWidth - spriteWidth);
+		dstPixel += (m_bufferWidth - spriteWidth);
+		depthBuffer += (m_bufferWidth - spriteWidth);
+		srcPixel += srcIncrement * spriteWidth;
+		mask += srcIncrement * spriteWidth;
 	}
 }
 

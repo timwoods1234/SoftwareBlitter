@@ -11,11 +11,16 @@ public:
 
 	~SoftSprite();
 
-	int GetWidth()  const;
+	unsigned int GetWidth()  const;
 
-	int GetHeight() const;
+	unsigned int GetHeight() const;
 
-	const Bitmap* GetRawData() const;
+	// return the top-left pizel colour
+	unsigned int GetColourKey() const;
+
+	const unsigned int* GetRawPtr() const;
+
+	const char* GetMaskPtr() const;
 
 	void ApplyCompression(int percentage);
 
@@ -25,7 +30,13 @@ public:
 
 protected:
 
+	void BuildCachedBuffers();
+
 	Bitmap* m_bitmap;
+
+	unsigned int* m_cachedPixels;
+
+	char* m_mask;
 
 	bool m_enableTransparency;
 };

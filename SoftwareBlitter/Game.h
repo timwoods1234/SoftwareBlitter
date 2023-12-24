@@ -23,14 +23,11 @@ private:
 
 	void DrawFish();
 
-	void DrawUI();
-
 	std::vector<Fish*> m_fish;
 
 	SpriteInstance* m_background;
-	SpriteInstance* m_title;
 
-	const unsigned int c_maxFish = 30;
+	const unsigned int c_maxFish = 200;
 
 	float m_fishSpawnTimer;
 };

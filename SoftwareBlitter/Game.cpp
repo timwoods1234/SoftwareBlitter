@@ -11,19 +11,16 @@ Game::Game()
 {
 	m_fishSpawnTimer = 0.f;
 
+	m_fish.reserve(c_maxFish);
+
 	m_background = new SpriteInstance("Assets/Background.bmp");
 	m_background->SetPosition(Vector2D::Zero());
-
-	m_title = new SpriteInstance("Assets/Title.bmp");
-	m_title->GetSpriteData()->EnableTransparency(true);
-	m_title->SetPosition(Vector2D::Zero());
 }
 
 /*****************************************************************************************/
 Game::~Game()
 {
 	delete m_background;
-	delete m_title;
 
 	for (unsigned int index = 0; index < m_fish.size(); index++)
 	{
@@ -47,7 +44,7 @@ void Game::Update(float elapsedTime)
 
 		m_fish.push_back(newFish);
 
-		m_fishSpawnTimer = 0.15f;
+		m_fishSpawnTimer = 0.05f;
 	}
 }
 
@@ -56,15 +53,13 @@ void Game::Render()
 {
 	DrawFish();
 
-	DrawUI();
-
-	// draw this last with ALWAYS_FAIL_DEPTH to write minimum amount of pixels
 	DrawBackground();
 }
 
 /*****************************************************************************************/
 void Game::DrawBackground()
 {
+	// draw this last with ALWAYS_FAIL_DEPTH to write minimum amount of pixels
 	SoftwareRenderer::GetCurrentInstance()->SetBlendMode(ALWAYS_FAIL_DEPTH);
 	m_background->Render();
 }
@@ -78,11 +73,4 @@ void Game::DrawFish()
 	{
 		m_fish[index]->Render();
 	}
-}
-
-/*****************************************************************************************/
-void Game::DrawUI()
-{
-	SoftwareRenderer::GetCurrentInstance()->SetBlendMode(ALWAYS_PASS_DEPTH);
-	m_title->Render();
 }

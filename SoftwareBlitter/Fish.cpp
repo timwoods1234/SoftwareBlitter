@@ -12,7 +12,7 @@ Fish::Fish()
 {
 	m_sprite = new SpriteInstance("Assets/Fish.bmp");
 
-	m_sprite->SetDepth(-2);
+	m_sprite->SetDepth(2);
 	m_sprite->GetSpriteData()->EnableTransparency(true);
 
 	SetInitialState();
