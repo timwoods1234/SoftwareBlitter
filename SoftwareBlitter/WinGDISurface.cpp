@@ -119,17 +119,6 @@ void WinGDISurface::AddSprite(SpriteInstance* spriteInstance)
 			writePixel ^= (m_blendMode == ALWAYS_FAIL_DEPTH && *depthBuffer != 127);
 			writePixel ^= (m_blendMode == COMPARE_DEPTH && depth >= *depthBuffer);
 
-			/*if (m_blendMode == ALWAYS_FAIL_DEPTH && *depthBuffer < 127)
-			{
-				// skip written pixel
-				writePixel = false;
-			}
-			else if (m_blendMode == COMPARE_DEPTH && depth >= *depthBuffer)
-			{
-				// skip writing deeper object, there is something in front of it
-				writePixel = false;
-			}*/
-
 			if (writePixel)
 			{
 				*dstPixel = (*dstPixel & *mask) | *srcPixel;
